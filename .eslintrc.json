@@ -1,3 +1,14 @@
 {
-  "extends": "nightmare-mode"
+  "env": {
+    "es6": true,
+    "amd": false,
+    "browser": true,
+    "jasmine": false,
+    "mocha": false,
+    "node": true
+  },
+  "extends": "nightmare-mode",
+  "rules": {
+    "no-restricted-syntax": 0
+  }
 }
