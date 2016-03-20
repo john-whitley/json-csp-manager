@@ -1,5 +1,16 @@
+/**
+ * Provides the JSON schema for JSON CSP.
+ */
 class JsonCsp {
 
+  /**
+   * There are a lot of different CSP rules that act similarly, that
+   * require an involved JSON schema rule.  This returns the shape
+   * required for "*-src" and similar CSP rules.
+   *
+   * @return {object} the JSON schema shape for a CSP rule that can act
+   *                  as a normal "*-src"
+   */
   static get schemaForSrc() {
     return {
       anyOf: [
@@ -10,6 +21,11 @@ class JsonCsp {
     };
   }
 
+  /**
+   * Get the object to use with jsonschema to provide JSON CSP validation.
+   *
+   * @return {object} the JSON schema for JSON CSP
+   */
   static get schema() {
     return {
       title: 'JSON-CSP',
@@ -87,6 +103,11 @@ class JsonCsp {
     };
   }
 
+  /**
+   * Get the JSON string of JSON CSP.
+   *
+   * @return {string} the JSON schema for JSON CSP
+   */
   static toJson() {
     return JSON.stringify(JsonCsp.schema);
   }
