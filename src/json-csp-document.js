@@ -36,7 +36,7 @@ class JsonCspDocument {
   validate() {
     const validator = this.jsonSchemaValidator;
 
-    return validator.validate(this.cspRules, JsonCspSchema.schema.id);
+    return validator.validate(this.cspRules, this.jsonCspSchema.id);
   }
 
   isValid() {
