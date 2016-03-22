@@ -55,14 +55,16 @@ describe('JsonCspDocument construction', function() {
   it('copes with invalid JSON strings', function() {
     invalidJsonStrings.forEach((candidate) => {
       var candidateObject = null;
+      var candidateExceptionName = null;
 
       try {
         candidateObject = new JsonCspDocument(candidate);
       }
       catch (candidateException) {
-        assert.equal(candidateException.name, 'JsonCspDocumentRulesException', `JSON string ${candidate} throws the correct exception`);
+        candidateExceptionName = candidateException.name;
       }
 
+      assert.equal(candidateExceptionName, 'JsonCspDocumentRulesException', `JSON string ${candidate} throws the correct exception`);
       assert.isNull(candidateObject, `JSON string ${candidate} does not allow construction of class`);
     });
   });
