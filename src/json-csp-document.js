@@ -14,7 +14,7 @@ class JsonCspDocument {
   /**
    * Take the JSON CSP candidate and build a class around it to ensure that we can use it to take meaning from it.
    *
-   * @param {string|object} the JSON CSP details
+   * @param {string|object} cspRules the JSON CSP details
    *
    * @throws {JsonCspDocumentRulesException} the constructor can cope with
    *                                         the type you passed in,
