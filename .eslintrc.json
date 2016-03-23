@@ -9,6 +9,8 @@
   },
   "extends": "nightmare-mode",
   "rules": {
-    "no-restricted-syntax": 0
+    "no-restricted-syntax": 0,
+    "arrow-parens": [2, "always"],
+    "arrow-spacing": [2, { "before": true, "after": true }]
   }
 }
