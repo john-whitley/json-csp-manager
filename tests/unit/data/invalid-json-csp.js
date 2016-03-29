@@ -14,6 +14,10 @@ InvalidJsonCsp.prototype.examples = function() {
       example: '{"default-src": ["\'self\'", "domain.com"], "script-src": ["\'broken\'"]}',
       title: 'Invalid constant in script-src'
     },
+    {
+      example: '{"default-src": ["\'self\'", "\'none\'"]}',
+      title: 'Invalid none and self in script-src'
+    },
   ];
 };
 

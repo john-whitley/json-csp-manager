@@ -13,10 +13,23 @@ class JsonCsp {
    */
   static get schemaForSrc() {
     return {
-      anyOf: [
-        {type: 'string', enum: ['\'data\'', '\'none\'', '\'self\'']},
-        {type: 'string', format: 'hostname'},
-        {type: 'string', format: 'uri'}
+      oneOf: [
+        {
+          type: 'array',
+          items: { enum: ['\'none\''] },
+          additionalItems: false
+        },
+        {
+          type: 'array',
+          items: {
+	    anyOf: [
+	      {type: 'string', enum: ['\'data\'', '\'self\'']},
+	      {type: 'string', format: 'hostname'},
+	      {type: 'string', format: 'uri'}
+	    ]
+          },
+          additionalItems: false
+        }
       ]
     };
   }
@@ -29,51 +42,21 @@ class JsonCsp {
   static get schema() {
     return {
       title: 'JSON-CSP',
-      id: '/jsoncsp',
+      id: 'http://jsoncsp',
       description: 'Definition of a valid JSON-CSP document',
       type: 'object',
       properties: {
         'base-uri': {type: 'string', format: 'uri'},
-        'child-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'connect-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'default-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'font-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'form-action': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'frame-ancestors': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'frame-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'img-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'media-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'object-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
+        'child-src': JsonCsp.schemaForSrc,
+        'connect-src': JsonCsp.schemaForSrc,
+        'default-src': JsonCsp.schemaForSrc,
+        'font-src': JsonCsp.schemaForSrc,
+        'form-action': JsonCsp.schemaForSrc,
+        'frame-ancestors': JsonCsp.schemaForSrc,
+        'frame-src': JsonCsp.schemaForSrc,
+        'img-src': JsonCsp.schemaForSrc,
+        'media-src': JsonCsp.schemaForSrc,
+        'object-src': JsonCsp.schemaForSrc,
         'plugin-types': {
           type: 'array',
           items: {
@@ -91,14 +74,8 @@ class JsonCsp {
             ]
           }
         },
-        'script-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        },
-        'style-src': {
-          type: 'array',
-          items: JsonCsp.schemaForSrc
-        }
+        'script-src': JsonCsp.schemaForSrc,
+        'style-src': JsonCsp.schemaForSrc,
       }
     };
   }
