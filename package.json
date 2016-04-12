@@ -4,12 +4,22 @@
   "description": "Manage complex CSP rules simply",
   "main": "index.js",
   "scripts": {
-    "prebuild": "rm -rf lib",
-    "build": "babel src -d lib",
-    "doc": "./node_modules/esdoc/out/src/ESDocCLI.js -c esdoc.json",
+    "prebuild-bin": "rm -rf bin",
+    "build-bin": "babel src/bin -d bin",
+    "prebuild-lib": "rm -rf lib",
+    "build-lib": "babel src/lib -d lib",
+    "build": "npm run build-lib && npm run build-bin",
+    "prepublish": "npm run build && npm run build-doc",
+    "build-doc": "./node_modules/esdoc/out/src/ESDocCLI.js -c esdoc.json",
+    "codereview-lib": "./node_modules/eslint/bin/eslint.js src/lib",
+    "codereview-bin": "./node_modules/eslint/bin/eslint.js src/bin",
+    "codereview": "npm run codereview-lib && npm run codereview-bin",
     "pretest": "npm run build",
     "test": "./node_modules/mocha/bin/mocha --recursive tests/",
-    "posttest": "./node_modules/eslint/bin/eslint.js src"
+    "posttest": "npm run codereview"
+  },
+  "bin": {
+    "json-csp-manager": "./bin/json-csp-manager.js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +46,9 @@
     "mocha": "^2.4.5"
   },
   "dependencies": {
-    "jsonschema": "^1.1.0"
+    "cli": "^0.11.2",
+    "cli-table": "^0.3.1",
+    "jsonschema": "^1.1.0",
+    "uuid5": "^1.0.1"
   }
 }

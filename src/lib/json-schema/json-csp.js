@@ -16,19 +16,23 @@ class JsonCsp {
       oneOf: [
         {
           type: 'array',
-          items: { enum: ['\'none\''] },
-          additionalItems: false
+          items: {
+            enum: ['\'none\'']
+          },
+          additionalItems: false,
+          maxItems: 1
         },
         {
           type: 'array',
           items: {
-	    anyOf: [
-	      {type: 'string', enum: ['\'data\'', '\'self\'']},
-	      {type: 'string', format: 'hostname'},
-	      {type: 'string', format: 'uri'}
-	    ]
+            anyOf: [
+              {type: 'string', enum: ['\'data\'', '\'self\'']},
+              {type: 'string', format: 'hostname'},
+              {type: 'string', format: 'uri'}
+            ]
           },
-          additionalItems: false
+          additionalItems: false,
+          uniqueItems: true
         }
       ]
     };
@@ -45,6 +49,7 @@ class JsonCsp {
       id: 'http://jsoncsp',
       description: 'Definition of a valid JSON-CSP document',
       type: 'object',
+      additionalProperties: false,
       properties: {
         'base-uri': {type: 'string', format: 'uri'},
         'child-src': JsonCsp.schemaForSrc,
@@ -75,7 +80,7 @@ class JsonCsp {
           }
         },
         'script-src': JsonCsp.schemaForSrc,
-        'style-src': JsonCsp.schemaForSrc,
+        'style-src': JsonCsp.schemaForSrc
       }
     };
   }
@@ -87,6 +92,43 @@ class JsonCsp {
    */
   static toJson() {
     return JSON.stringify(JsonCsp.schema);
+  }
+
+  /**
+   * Get the list of keys that potentially conflict during a merge of
+   * a JSON CSP document.
+   *
+   * @return {Set} the valid keys in a JSON CSP document.
+   */
+  static get conflictingKeys() {
+    return new Set([
+      'base-uri',
+      'report-uri'
+    ]);
+  }
+
+  /**
+   * Get the list of mergeable keys of a JSON CSP document to be able
+   * to merge.
+   *
+   * @return {Set} the valid keys in a JSON CSP document.
+   */
+  static get mergeableKeys() {
+    return new Set([
+      'child-src',
+      'connect-src',
+      'default-src',
+      'font-src',
+      'form-action',
+      'frame-ancestors',
+      'frame-src',
+      'img-src',
+      'media-src',
+      'object-src',
+      'plugin-types',
+      'script-src',
+      'style-src'
+    ]);
   }
 }
 

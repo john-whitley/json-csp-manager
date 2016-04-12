@@ -1,4 +1,5 @@
 import JsonCspDocument from './json-csp-document';
+import JsonCspReport from './json-csp-report';
 import JsonCspManagerTypeException from './exceptions/json-csp-manager-type-exception';
 
 /**
@@ -6,6 +7,34 @@ import JsonCspManagerTypeException from './exceptions/json-csp-manager-type-exce
  * an output.
  */
 class JsonCspManager {
+
+  /**
+   * Get the report instance that will contain the reasons for how the
+   * merged JSON CSP document merged.
+   *
+   * @return {JsonCspReport} the instance that reports on this merge.
+   */
+  get jsonCspReport() {
+    if (!(this.privateJsonCspReport instanceof JsonCspReport)) {
+      /**
+       * @parameter {JsonCspReport} privateJsonCspReport the report of
+       *                            this merge
+       */
+      this.privateJsonCspReport = new JsonCspReport();
+    }
+
+    return this.privateJsonCspReport;
+  }
+
+  /**
+   * Should the report about this managers merge need to be cleared,
+   * then this clears it.
+   *
+   * @return {void}
+   */
+  clearJsonCspReport() {
+    this.privateJsonCspReport = null;
+  }
 
   /**
    * Get all existing JsonCspDocument instances in this manager
@@ -44,6 +73,7 @@ class JsonCspManager {
     }
 
     this.privateJsonCspDocuments = jsonCspDocuments;
+    this.clearJsonCspReport();
   }
 
   /**
@@ -65,6 +95,43 @@ class JsonCspManager {
     return this.jsonCspDocuments;
   }
 
+  /**
+   * Get a new iterator of this.jsonCspDocuments.
+   *
+   * @returns {Iterator} of {@link JsonCspDocument} instances that this manager manages.
+   */
+  *jsonCspDocumentsIterator() {
+    let index = 0;
+
+    while (index < this.jsonCspDocuments.length) {
+      yield this.jsonCspDocuments[index++];
+    }
+  }
+
+  /**
+   * Merge together all the documents managed by this manager.
+   *
+   * @return {JsonCspDocument} the merged documents as a single document.
+   */
+  get mergedJsonCspDocument() {
+    if (this.privateJsonCspDocuments.length) {
+      const iterator = this.jsonCspDocumentsIterator();
+      let mergedJsonCspDocument = iterator.next().value;
+      let nextJsonCspDocument = iterator.next();
+
+      while (nextJsonCspDocument.done === false) {
+        const toMergeIn = nextJsonCspDocument.value;
+
+        mergedJsonCspDocument = mergedJsonCspDocument.mergeWith(toMergeIn, this.jsonCspReport);
+
+        nextJsonCspDocument = iterator.next();
+      }
+
+      return mergedJsonCspDocument;
+    }
+
+    return new JsonCspDocument('{}');
+  }
 }
 
 export default JsonCspManager;
