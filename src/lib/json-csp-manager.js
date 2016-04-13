@@ -116,7 +116,7 @@ class JsonCspManager {
   get mergedJsonCspDocument() {
     if (this.privateJsonCspDocuments.length) {
       const iterator = this.jsonCspDocumentsIterator();
-      let mergedJsonCspDocument = iterator.next().value;
+      let mergedJsonCspDocument = new JsonCspDocument({});
       let nextJsonCspDocument = iterator.next();
 
       while (nextJsonCspDocument.done === false) {
