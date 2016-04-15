@@ -280,8 +280,8 @@ class JsonCspDocument {
     JsonCspSchema.conflictingKeys.forEach((value, key) => {
       const mergedValues = this.mergeConflictingKey(mergeIn, key, jsonCspReport);
 
-      if (Array.isArray(value) && value.length) {
-        newCspObject[key] = mergedValues;
+      if (Array.isArray(mergedValues) && mergedValues.length) {
+        newCspObject[key] = mergedValues.shift();
       }
     });
 

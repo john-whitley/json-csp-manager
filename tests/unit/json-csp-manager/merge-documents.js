@@ -23,7 +23,7 @@ describe('JsonCspManager can manage JsonCspDocuments', function() {
       new JsonCspDocument('{"script-src": "\'self\'"}'),
       new JsonCspDocument('{"img-src": "\'self\'"}'),
       new JsonCspDocument('{"img-src": "example.com"}'),
-      new JsonCspDocument('{"report-uri": "report.example.com/csp-report"}'),
+      new JsonCspDocument('{"report-uri": "https://report.example.com/csp-report"}'),
     ];
 
     var jsonCspManager = new JsonCspManager();

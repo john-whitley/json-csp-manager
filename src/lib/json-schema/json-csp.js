@@ -51,7 +51,7 @@ class JsonCsp {
       type: 'object',
       additionalProperties: false,
       properties: {
-        'base-uri': {type: 'string', format: 'uri'},
+        'base-uri': {oneOf: [{type: 'string', format: 'uri'}, {type: 'string', format: 'hostname'}]},
         'child-src': JsonCsp.schemaForSrc,
         'connect-src': JsonCsp.schemaForSrc,
         'default-src': JsonCsp.schemaForSrc,
